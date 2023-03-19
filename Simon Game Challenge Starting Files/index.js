@@ -33,32 +33,22 @@ function animatePress(name) {
 }
 
 function checkAnswer(number) {}
-while (gameOn === true) {
-  $("#level-title").text("Level " + level);
 
-  // create a way to generate and store random numbers that can be matched up with buttons.
-  var newButtonNum = Math.floor(Math.random() * gameElements.length);
-  allPrompts.push(gameElements[newButtonNum]);
+$("#level-title").text("Level " + level);
 
-  // play sound for the most recent element
-  gameAudio = new Audio("sounds/" + gameElements[newButtonNum] + ".mp3");
-  gameAudio.play();
+var newButtonNum = Math.floor(Math.random() * gameElements.length);
+allPrompts.push(gameElements[newButtonNum]);
 
-  while (numberOfClicks < allPrompts.length) {
-    // store user input and apply pressed style
-
-    // compare user input against the generated prompts so far
-
-    for (i = 0; i <= allPrompts.lenth; i++) {
-      if (allPrompts[i] != allInputs[i]) {
-        gameAudio = new Audio("sounds/wrong.mp3");
-        $("#level-title").text("Game Over, Press Any Key to Restart");
-        gameOn = false;
-        numberOfClicks = allPrompts.length;
-        i = allPrompts.length;
-      } else {
-        level = level + 1;
-      }
+while (numberOfClicks < allPrompts.length) {
+  for (i = 0; i <= allPrompts.lenth; i++) {
+    if (allPrompts[i] != allInputs[i]) {
+      gameAudio = new Audio("sounds/wrong.mp3");
+      $("#level-title").text("Game Over, Press Any Key to Restart");
+      gameOn = false;
+      numberOfClicks = allPrompts.length;
+      i = allPrompts.length;
+    } else {
+      level = level + 1;
     }
   }
 }
