@@ -20,10 +20,12 @@ $(".btn").click(function () {
   animatePress(newInput);
   allInputs.push(newInput);
   checkAnswer(allInputs.length - 1);
+  console.log(newInput);
 });
 
 function checkAnswer(currentLevel) {
-  if (allInputs[currentLevel] === allPrompts[currentLevel]) {
+  console.log(currentLevel);
+  if (allPrompts[currentLevel] === allInputs[currentLevel]) {
     if (allInputs.length === allPrompts.length) {
       setTimeout(function () {
         nextSequence();
@@ -49,7 +51,7 @@ function nextSequence() {
 
   var randNum = Math.floor(Math.random() * gameElements.length);
   var newColour = gameElements[randNum];
-  allPrompts.push(gameElements[newColour]);
+  allPrompts.push(newColour);
 
   $("#" + newColour)
     .fadeIn(100)
