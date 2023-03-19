@@ -1,10 +1,12 @@
-const gameElements = ["blue", "green", "yellow", "red"];
-var level = 0;
+var gameElements = ["blue", "green", "yellow", "red"];
+
 var allPrompts = [];
 var allInputs = [];
-gameOn = false;
 
-$(body).keydown(function () {
+gameOn = false;
+var level = 0;
+
+$(document).keydown(function () {
   if (!gameOn) {
     $("#level-title").text("Level " + level);
     nextSequence();
@@ -12,17 +14,48 @@ $(body).keydown(function () {
   }
 });
 
-$("button").click(function () {
-  var newInput = $this.attr("id");
+$(".btn").click(function () {
+  var newInput = $(this).attr("id");
   playSound(newInput);
   animatePress(newInput);
   allInputs.push(newInput);
   checkAnswer(allInputs.length - 1);
 });
 
-function playSound(name) {
-  var sound = new Audio("sounds/" + name + ".mp3");
-  sound.play();
+function checkAnswer(currentLevel) {
+  if (allInputs[currentLevel] === allPrompts[currentLevel]) {
+    if (allInputs.length === allPrompts.length) {
+      setTimeout(function () {
+        nextSequence();
+      }, 1000);
+    }
+  } else {
+    playSound("wrong");
+    $("body").addClass("game-over");
+    $("#level-title").text("Game Over, Press Any Key to Restart");
+
+    setTimeout(function () {
+      $("body").removeClass("game-over");
+    }, 200);
+
+    newGame();
+  }
+}
+
+function nextSequence() {
+  allInputs = [];
+  level++;
+  $("#level-title").text("Level " + level);
+
+  var randNum = Math.floor(Math.random() * gameElements.length);
+  var newColour = gameElements[randNum];
+  allPrompts.push(gameElements[newColour]);
+
+  $("#" + newColour)
+    .fadeIn(100)
+    .fadeOut(100)
+    .fadeIn(100);
+  playSound(newColour);
 }
 
 function animatePress(name) {
@@ -32,29 +65,13 @@ function animatePress(name) {
   }, 100);
 }
 
-function checkAnswer(number) {}
-
-$("#level-title").text("Level " + level);
-
-var newButtonNum = Math.floor(Math.random() * gameElements.length);
-allPrompts.push(gameElements[newButtonNum]);
-
-while (numberOfClicks < allPrompts.length) {
-  for (i = 0; i <= allPrompts.lenth; i++) {
-    if (allPrompts[i] != allInputs[i]) {
-      gameAudio = new Audio("sounds/wrong.mp3");
-      $("#level-title").text("Game Over, Press Any Key to Restart");
-      gameOn = false;
-      numberOfClicks = allPrompts.length;
-      i = allPrompts.length;
-    } else {
-      level = level + 1;
-    }
-  }
+function playSound(name) {
+  var sound = new Audio("sounds/" + name + ".mp3");
+  sound.play();
 }
 
 function newGame() {
-  gameOn = false;
   level = 0;
   allPrompts = [];
+  gameOn = false;
 }
